@@ -9,6 +9,7 @@ import { HEROES } from "../mock-heroes";
   styleUrls: ['./heroes.component.css']
 })
 export class HeroesComponent implements OnInit {
+
   heroes = HEROES;
   selectedHero?: Hero;
 
