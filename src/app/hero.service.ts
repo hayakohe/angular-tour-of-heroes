@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, of } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 
 import { Hero } from './Hero';
 import { HEROES } from './mock-heroes';
@@ -26,10 +26,24 @@ export class HeroService {
   }
 
   getHeroes(): Observable<Hero[]> {
-    return this.http.get<Hero[]>(this.heroesUrl);
+    return this.http.get<Hero[]>(this.heroesUrl)
+      .pipe(
+        catchError(this.handleError<Hero[]>("getHeroes", []))
+      );
   }
 
   private log(message: string) {
     this.messageService.add(`HeroService: ${message}`);
+  }
+
+  private handleError<T>(operation = "oparation", result?: T) {
+    return (error: any): Observable<T> => {
+      // TODO: リモート上のロギング基盤にエラーを送信する
+      console.error(error); // かわりにconsoleに出力
+      // TODO: ユーザーへの開示のためにエラーの変換処理を改善する
+      this.log(`${operation} failed: ${error.message}`);
+      // 空の結果を返して、アプリを持続可能にする
+      return of(result as T);
+    };
   }
 }
