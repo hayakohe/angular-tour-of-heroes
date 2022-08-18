@@ -35,7 +35,7 @@ export class HeroService {
   private log(message: string) {
     this.messageService.add(`HeroService: ${message}`);
   }
-
+  // 型パラメータを用いて呼び出し元のメソッドが期待する型を返却する
   private handleError<T>(operation = "oparation", result?: T) {
     return (error: any): Observable<T> => {
       // TODO: リモート上のロギング基盤にエラーを送信する
