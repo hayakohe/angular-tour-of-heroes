@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, Observable, of, tap } from 'rxjs';
 
 import { Hero } from './Hero';
 import { HEROES } from './mock-heroes';
@@ -28,6 +28,7 @@ export class HeroService {
   getHeroes(): Observable<Hero[]> {
     return this.http.get<Hero[]>(this.heroesUrl)
       .pipe(
+        tap(heroes => this.log("fetched heroes")),
         catchError(this.handleError<Hero[]>("getHeroes", []))
       );
   }
